@@ -42,7 +42,7 @@ const App = ({ signOut }) => {
     setNotes(notesFromAPI);
   }
 
-  console.log( getUser() );
+  console.log( API.graphql({ query: listNotes }) );
 
   async function createNote(event) {
     event.preventDefault();
@@ -119,10 +119,11 @@ const App = ({ signOut }) => {
             </Text>
             <Text as="span">{note.description}</Text>
             <Text as="span">{note.time}</Text>
+            <Text as="span">{note.user}</Text>
             <Button variation="link" onClick={() => deleteNote(note)}>
               Delete note
             </Button>
-          </Flex>
+          </Flex>          
         ))}
       </View>
       <Button onClick={signOut}>Sign Out</Button>

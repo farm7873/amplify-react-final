@@ -25,20 +25,28 @@ export default function NoteCreateForm(props) {
   const initialValues = {
     name: "",
     description: "",
+    user: "",
+    time: "",
   };
   const [name, setName] = React.useState(initialValues.name);
   const [description, setDescription] = React.useState(
     initialValues.description
   );
+  const [user, setUser] = React.useState(initialValues.user);
+  const [time, setTime] = React.useState(initialValues.time);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setName(initialValues.name);
     setDescription(initialValues.description);
+    setUser(initialValues.user);
+    setTime(initialValues.time);
     setErrors({});
   };
   const validations = {
     name: [{ type: "Required" }],
     description: [],
+    user: [],
+    time: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -68,6 +76,8 @@ export default function NoteCreateForm(props) {
         let modelFields = {
           name,
           description,
+          user,
+          time,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -132,6 +142,8 @@ export default function NoteCreateForm(props) {
             const modelFields = {
               name: value,
               description,
+              user,
+              time,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -157,6 +169,8 @@ export default function NoteCreateForm(props) {
             const modelFields = {
               name,
               description: value,
+              user,
+              time,
             };
             const result = onChange(modelFields);
             value = result?.description ?? value;
@@ -170,6 +184,60 @@ export default function NoteCreateForm(props) {
         errorMessage={errors.description?.errorMessage}
         hasError={errors.description?.hasError}
         {...getOverrideProps(overrides, "description")}
+      ></TextField>
+      <TextField
+        label="User"
+        isRequired={false}
+        isReadOnly={false}
+        value={user}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              description,
+              user: value,
+              time,
+            };
+            const result = onChange(modelFields);
+            value = result?.user ?? value;
+          }
+          if (errors.user?.hasError) {
+            runValidationTasks("user", value);
+          }
+          setUser(value);
+        }}
+        onBlur={() => runValidationTasks("user", user)}
+        errorMessage={errors.user?.errorMessage}
+        hasError={errors.user?.hasError}
+        {...getOverrideProps(overrides, "user")}
+      ></TextField>
+      <TextField
+        label="Time"
+        isRequired={false}
+        isReadOnly={false}
+        value={time}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              description,
+              user,
+              time: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.time ?? value;
+          }
+          if (errors.time?.hasError) {
+            runValidationTasks("time", value);
+          }
+          setTime(value);
+        }}
+        onBlur={() => runValidationTasks("time", time)}
+        errorMessage={errors.time?.errorMessage}
+        hasError={errors.time?.hasError}
+        {...getOverrideProps(overrides, "time")}
       ></TextField>
       <Flex
         justifyContent="space-between"

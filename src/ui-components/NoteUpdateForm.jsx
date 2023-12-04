@@ -27,11 +27,15 @@ export default function NoteUpdateForm(props) {
   const initialValues = {
     name: "",
     description: "",
+    user: "",
+    time: "",
   };
   const [name, setName] = React.useState(initialValues.name);
   const [description, setDescription] = React.useState(
     initialValues.description
   );
+  const [user, setUser] = React.useState(initialValues.user);
+  const [time, setTime] = React.useState(initialValues.time);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = noteRecord
@@ -39,6 +43,8 @@ export default function NoteUpdateForm(props) {
       : initialValues;
     setName(cleanValues.name);
     setDescription(cleanValues.description);
+    setUser(cleanValues.user);
+    setTime(cleanValues.time);
     setErrors({});
   };
   const [noteRecord, setNoteRecord] = React.useState(noteModelProp);
@@ -60,6 +66,8 @@ export default function NoteUpdateForm(props) {
   const validations = {
     name: [{ type: "Required" }],
     description: [],
+    user: [],
+    time: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -89,6 +97,8 @@ export default function NoteUpdateForm(props) {
         let modelFields = {
           name,
           description: description ?? null,
+          user: user ?? null,
+          time: time ?? null,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -151,6 +161,8 @@ export default function NoteUpdateForm(props) {
             const modelFields = {
               name: value,
               description,
+              user,
+              time,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -176,6 +188,8 @@ export default function NoteUpdateForm(props) {
             const modelFields = {
               name,
               description: value,
+              user,
+              time,
             };
             const result = onChange(modelFields);
             value = result?.description ?? value;
@@ -189,6 +203,60 @@ export default function NoteUpdateForm(props) {
         errorMessage={errors.description?.errorMessage}
         hasError={errors.description?.hasError}
         {...getOverrideProps(overrides, "description")}
+      ></TextField>
+      <TextField
+        label="User"
+        isRequired={false}
+        isReadOnly={false}
+        value={user}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              description,
+              user: value,
+              time,
+            };
+            const result = onChange(modelFields);
+            value = result?.user ?? value;
+          }
+          if (errors.user?.hasError) {
+            runValidationTasks("user", value);
+          }
+          setUser(value);
+        }}
+        onBlur={() => runValidationTasks("user", user)}
+        errorMessage={errors.user?.errorMessage}
+        hasError={errors.user?.hasError}
+        {...getOverrideProps(overrides, "user")}
+      ></TextField>
+      <TextField
+        label="Time"
+        isRequired={false}
+        isReadOnly={false}
+        value={time}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              description,
+              user,
+              time: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.time ?? value;
+          }
+          if (errors.time?.hasError) {
+            runValidationTasks("time", value);
+          }
+          setTime(value);
+        }}
+        onBlur={() => runValidationTasks("time", time)}
+        errorMessage={errors.time?.errorMessage}
+        hasError={errors.time?.hasError}
+        {...getOverrideProps(overrides, "time")}
       ></TextField>
       <Flex
         justifyContent="space-between"
