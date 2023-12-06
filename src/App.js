@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { Amplify } from 'aws-amplify';
+import config from './amplifyconfiguration.json';
 import '@aws-amplify/ui-react/styles.css';
 import "./App.css";
 import { generateClient } from 'aws-amplify/api';
@@ -17,6 +19,7 @@ import {
   createNote as createNoteMutation,
   deleteNote as deleteNoteMutation,
 } from "./graphql/mutations";
+Amplify.configure(config);
 
 const API = generateClient();
 
