@@ -64,11 +64,7 @@ const App = ({ signOut }) => {
 
   async function fetchNotes() {
     const apiData = await API.graphql({
-      query: listNotes,
-      variables: {
-        sortDirection: 'DESC', // 'ASC' for ascending order
-        sortBy: 'noteByDate'
-      }
+      query: listNotes
     });
     const notesFromAPI = apiData.data.listNotes.items;
     setNotes(notesFromAPI);

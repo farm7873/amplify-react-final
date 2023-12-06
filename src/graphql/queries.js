@@ -41,38 +41,6 @@ export const listNotes = /* GraphQL */ `
     }
   }
 `;
-export const noteByDate = /* GraphQL */ `
-  query NoteByDate(
-    $id: ID!
-    $createdAt: ModelStringKeyConditionInput
-    $sortDirection: ModelSortDirection
-    $filter: ModelNoteFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    noteByDate(
-      id: $id
-      createdAt: $createdAt
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        createdAt
-        name
-        description
-        user
-        time
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
 export const getReply = /* GraphQL */ `
   query GetReply($id: ID!) {
     getReply(id: $id) {
@@ -101,6 +69,38 @@ export const listReplies = /* GraphQL */ `
         content
         postID
         createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const noteByDate = /* GraphQL */ `
+  query NoteByDate(
+    $id: ID!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelNoteFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    noteByDate(
+      id: $id
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        createdAt
+        name
+        description
+        user
+        time
         updatedAt
         __typename
       }
