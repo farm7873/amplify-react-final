@@ -28,7 +28,13 @@ const App = ({ signOut }) => {
   }, []);
 
   async function fetchNotes() {
-    const apiData = await API.graphql({ query: listNotes });
+    const apiData = await API.graphql({
+      query: listNotes,
+      variables: {
+        sortDirection: 'DESC', // 'ASC' for ascending order
+        sortBy: 'noteByDate'
+      }
+    });
     const notesFromAPI = apiData.data.listNotes.items;
     setNotes(notesFromAPI);
   }
@@ -108,9 +114,9 @@ const App = ({ signOut }) => {
             <Text as="strong" fontWeight={700}>
               {note.name}
             </Text>
-            <Text as="span">{note.description}</Text>
             <Text as="span">{note.time}</Text>
             <Text as="span">{note.user}</Text>
+            <Text as="span">{note.description}</Text>
             <Button variation="link" onClick={() => deleteNote(note)}>
               Delete note
             </Button>

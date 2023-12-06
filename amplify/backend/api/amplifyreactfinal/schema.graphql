@@ -1,14 +1,13 @@
 type Note @model @auth(rules: [ { allow: public } ] ){
   id: ID!
-  name: String!
-  description: String      
-    @index(
+      @index(
       name: "noteByDate"
       queryField: "noteByDate"
       sortKeyFields: ["createdAt"]
     )
+  createdAt: AWSDateTime!
+  name: String!
+  description: String      
   user: String
   time: String
-  createdAt: AWSDateTime!
-
 }
