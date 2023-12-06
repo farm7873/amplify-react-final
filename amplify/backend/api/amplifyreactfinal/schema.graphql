@@ -4,6 +4,7 @@ type Note @model @auth(rules: [ { allow: public } ] ){
   description: String
   user: String
   time: String
+  createdAt: AWSDateTime!
       @index(
       name: "noteByDate"
       queryField: "noteByDate"
