@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
+import '@aws-amplify/ui-react/styles.css';
 import "./App.css";
-import "@aws-amplify/ui-react/styles.css";
 import { generateClient } from 'aws-amplify/api';
 import { getCurrentUser } from 'aws-amplify/auth'
 import {
