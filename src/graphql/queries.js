@@ -10,6 +10,10 @@ export const getNote = /* GraphQL */ `
       description
       user
       time
+      replies {
+        nextToken
+        __typename
+      }
       updatedAt
       __typename
     }
@@ -61,6 +65,74 @@ export const noteByDate = /* GraphQL */ `
         description
         user
         time
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const getReply = /* GraphQL */ `
+  query GetReply($id: ID!) {
+    getReply(id: $id) {
+      id
+      createdAT
+      replyingUser
+      content
+      postID
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const listReplies = /* GraphQL */ `
+  query ListReplies(
+    $filter: ModelReplyFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listReplies(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        createdAT
+        replyingUser
+        content
+        postID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const repliesByPostIDAndContent = /* GraphQL */ `
+  query RepliesByPostIDAndContent(
+    $postID: ID!
+    $content: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelReplyFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    repliesByPostIDAndContent(
+      postID: $postID
+      content: $content
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        createdAT
+        replyingUser
+        content
+        postID
+        createdAt
         updatedAt
         __typename
       }

@@ -10,6 +10,10 @@ export const onCreateNote = /* GraphQL */ `
       description
       user
       time
+      replies {
+        nextToken
+        __typename
+      }
       updatedAt
       __typename
     }
@@ -24,6 +28,10 @@ export const onUpdateNote = /* GraphQL */ `
       description
       user
       time
+      replies {
+        nextToken
+        __typename
+      }
       updatedAt
       __typename
     }
@@ -38,6 +46,52 @@ export const onDeleteNote = /* GraphQL */ `
       description
       user
       time
+      replies {
+        nextToken
+        __typename
+      }
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onCreateReply = /* GraphQL */ `
+  subscription OnCreateReply($filter: ModelSubscriptionReplyFilterInput) {
+    onCreateReply(filter: $filter) {
+      id
+      createdAT
+      replyingUser
+      content
+      postID
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateReply = /* GraphQL */ `
+  subscription OnUpdateReply($filter: ModelSubscriptionReplyFilterInput) {
+    onUpdateReply(filter: $filter) {
+      id
+      createdAT
+      replyingUser
+      content
+      postID
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteReply = /* GraphQL */ `
+  subscription OnDeleteReply($filter: ModelSubscriptionReplyFilterInput) {
+    onDeleteReply(filter: $filter) {
+      id
+      createdAT
+      replyingUser
+      content
+      postID
+      createdAt
       updatedAt
       __typename
     }

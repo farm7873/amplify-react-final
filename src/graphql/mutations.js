@@ -13,6 +13,10 @@ export const createNote = /* GraphQL */ `
       description
       user
       time
+      replies {
+        nextToken
+        __typename
+      }
       updatedAt
       __typename
     }
@@ -30,6 +34,10 @@ export const updateNote = /* GraphQL */ `
       description
       user
       time
+      replies {
+        nextToken
+        __typename
+      }
       updatedAt
       __typename
     }
@@ -47,6 +55,61 @@ export const deleteNote = /* GraphQL */ `
       description
       user
       time
+      replies {
+        nextToken
+        __typename
+      }
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const createReply = /* GraphQL */ `
+  mutation CreateReply(
+    $input: CreateReplyInput!
+    $condition: ModelReplyConditionInput
+  ) {
+    createReply(input: $input, condition: $condition) {
+      id
+      createdAT
+      replyingUser
+      content
+      postID
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const updateReply = /* GraphQL */ `
+  mutation UpdateReply(
+    $input: UpdateReplyInput!
+    $condition: ModelReplyConditionInput
+  ) {
+    updateReply(input: $input, condition: $condition) {
+      id
+      createdAT
+      replyingUser
+      content
+      postID
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const deleteReply = /* GraphQL */ `
+  mutation DeleteReply(
+    $input: DeleteReplyInput!
+    $condition: ModelReplyConditionInput
+  ) {
+    deleteReply(input: $input, condition: $condition) {
+      id
+      createdAT
+      replyingUser
+      content
+      postID
+      createdAt
       updatedAt
       __typename
     }
