@@ -27,15 +27,6 @@ const App = ({ signOut }) => {
     fetchNotes();
   }, []);
 
-  async function getUser() {
-    try {
-      const { username } = await getCurrentUser();
-      return `${username}`;
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
   async function fetchNotes() {
     const apiData = await API.graphql({ query: listNotes });
     const notesFromAPI = apiData.data.listNotes.items;
@@ -46,13 +37,13 @@ const App = ({ signOut }) => {
 
   async function createNote(event) {
     event.preventDefault();
-    const usern = getUser();
+    const { username } = await getCurrentUser();
     const form = new FormData(event.target);
     const data = {
       name: form.get("name"),
       description: form.get("description"),
       time: form.get("time"),
-      user: usern,
+      user: `${ username }`,
     };
     await API.graphql({
       query: createNoteMutation,
