@@ -8,11 +8,11 @@ export const createNote = /* GraphQL */ `
   ) {
     createNote(input: $input, condition: $condition) {
       id
+      createdAt
       name
       description
       user
       time
-      createdAt
       updatedAt
       __typename
     }
@@ -25,11 +25,11 @@ export const updateNote = /* GraphQL */ `
   ) {
     updateNote(input: $input, condition: $condition) {
       id
+      createdAt
       name
       description
       user
       time
-      createdAt
       updatedAt
       __typename
     }
@@ -42,11 +42,11 @@ export const deleteNote = /* GraphQL */ `
   ) {
     deleteNote(input: $input, condition: $condition) {
       id
+      createdAt
       name
       description
       user
       time
-      createdAt
       updatedAt
       __typename
     }

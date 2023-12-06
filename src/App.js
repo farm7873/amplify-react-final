@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Amplify } from 'aws-amplify';
-import config from './amplifyconfiguration.json';
 import '@aws-amplify/ui-react/styles.css';
 import "./App.css";
 import { generateClient } from 'aws-amplify/api';
@@ -19,16 +17,50 @@ import {
   createNote as createNoteMutation,
   deleteNote as deleteNoteMutation,
 } from "./graphql/mutations";
-Amplify.configure(config);
 
 const API = generateClient();
 
 const App = ({ signOut }) => {
   const [notes, setNotes] = useState([]);
+  const [showUserPosts, setShowUserPosts] = useState(false);
 
   useEffect(() => {
     fetchNotes();
   }, []);
+
+  useEffect(() => {
+    // Fetch all posts or user-specific posts based on the state
+    showUserPosts ? fetchUserPosts() : fetchAllPosts();
+  }, [showUserPosts]); // Re-run the effect when showUserPosts changes
+
+
+  async function fetchAllPosts() {
+    const apiData = await API.graphql({
+      query: listNotes,
+      variables: {
+        sortDirection: 'DESC',
+        sortBy: 'noteByDate',
+      },
+    });
+    const notesFromAPI = apiData.data.listNotes.items;
+    setNotes(notesFromAPI);
+  }
+
+  async function fetchUserPosts() {
+    const { username } = await getCurrentUser();
+    const apiData = await API.graphql({
+      query: listNotes,
+      variables: {
+        filter: {
+          user: { eq: username },
+        },
+        sortDirection: 'DESC',
+        sortBy: 'noteByDate',
+      },
+    });
+    const userPosts = apiData.data.listNotes.items;
+    setNotes(userPosts);
+  }
 
   async function fetchNotes() {
     const apiData = await API.graphql({
@@ -58,8 +90,11 @@ const App = ({ signOut }) => {
       query: createNoteMutation,
       variables: { input: data },
     });
-    fetchNotes();
+    const newNote = {...data, id: form.get( "ID" )};
+    setNotes([newNote,...notes]);
     event.target.reset();
+    //fetchNotes();
+    //event.target.reset();
   }
 
   async function deleteNote({ id }) {
@@ -72,8 +107,17 @@ const App = ({ signOut }) => {
   }
 
   return (
-    <View className="App">
+    <View className="App"  justifyContent="right" margin="1rem">
       <Heading level={1}>StudyHub</Heading>
+        <Flex justifyContent="right">
+          <Button onClick={signOut} variation = "quiet">Sign Out</Button>
+        </Flex>
+        <Flex justifyContent="right">
+        <Button onClick={() => setShowUserPosts(!showUserPosts)}>
+            {showUserPosts ? 'All Posts' : 'My Posts'}
+          </Button>
+        </Flex>
+
       <View as="form" margin="3rem 0" onSubmit={createNote}>
         <Flex direction="row" justifyContent="center">
           <TextField
@@ -108,25 +152,30 @@ const App = ({ signOut }) => {
       <Heading level={2}>Study Group Posts</Heading>
       <View margin="3rem 0">
         {notes.map((note) => (
-          <Flex
+          <View
             key={note.id || note.name}
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
+            borderWidth="thick"
+            borderColor="dark"
+            borderRadius="regular"
+            padding="1rem"
+            marginBottom="1rem"
           >
-            <Text as="strong" fontWeight={700}>
-              {note.name}
+              <Text as="div" fontWeight={700}>
+                Subject: {note.name}
+              </Text>
+              <Text as="div">Preferred time: {note.time}</Text>
+            <Text as="div">Username: {note.user}</Text>
+            <Text as="div" overflow="auto" maxHeight="100px">
+              {note.description}
             </Text>
-            <Text as="span">{note.time}</Text>
-            <Text as="span">{note.user}</Text>
-            <Text as="span">{note.description}</Text>
-            <Button variation="link" onClick={() => deleteNote(note)}>
-              Delete note
+            {showUserPosts && (
+            <Button onClick={() => deleteNote(note)}>
+              Delete Post
             </Button>
-          </Flex>          
+            )}
+          </View>
         ))}
       </View>
-      <Button onClick={signOut}>Sign Out</Button>
     </View>
   );
 };
