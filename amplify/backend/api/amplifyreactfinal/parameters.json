@@ -2,5 +2,11 @@
   "AppSyncApiName": "amplifyreactfinal",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
   "DynamoDBEnableServerSideEncryption": false,
-  "AuthModeLastUpdated": "2023-12-04T03:29:19.469Z"
+  "AuthModeLastUpdated": "2023-12-06T16:22:03.517Z",
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authamplifyreactfinale0797b69",
+      "Outputs.UserPoolId"
+    ]
+  }
 }
